@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_21_102400) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_21_105057) do
   create_table "dosages", force: :cascade do |t|
     t.string "dosage_amount", limit: 255, default: "", null: false
     t.string "frequency", limit: 255, default: "", null: false
@@ -29,5 +29,23 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_21_102400) do
     t.index ["name"], name: "index_medications_on_name"
   end
 
+  create_table "prescription_dosages", force: :cascade do |t|
+    t.string "duration", limit: 255, default: "", null: false
+    t.integer "prescription_id", null: false
+    t.integer "dosage_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dosage_id"], name: "index_prescription_dosages_on_dosage_id"
+    t.index ["prescription_id"], name: "index_prescription_dosages_on_prescription_id"
+  end
+
+  create_table "prescriptions", force: :cascade do |t|
+    t.decimal "total", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "dosages", "medications"
+  add_foreign_key "prescription_dosages", "dosages"
+  add_foreign_key "prescription_dosages", "prescriptions"
 end
